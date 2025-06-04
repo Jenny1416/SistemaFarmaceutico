@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Farmacéutico</title>
-    <link rel="stylesheet" href="/Styles/index.css">
+    <link rel="stylesheet" href="Styles/index.css">
     <!-- Incluir Font Awesome para los iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="/Images/LogoSoloOlivia.png">
-    <link rel="stylesheet" href="/Styles/Inventario.css">
-    <link rel="stylesheet" href="/Styles/Estadisticas.css">
-    <link rel="stylesheet" href="/Styles/proveedores.css">
-    <link rel="stylesheet" href="/Styles/Usuarios.css">
-    <link rel="stylesheet" href="/Styles/Facura.css">
-    <link rel="stylesheet" href="/Styles/Configuración.css">
+    <link rel="icon" type="image/x-icon" href="Images/LogoSoloOlivia.png">
+    <link rel="stylesheet" href="Styles/Inventario.css">
+    <link rel="stylesheet" href="Styles/Estadisticas.css">
+    <link rel="stylesheet" href="Styles/proveedores.css">
+    <link rel="stylesheet" href="Styles/Usuarios.css">
+    <link rel="stylesheet" href="Styles/Facura.css">
+    <link rel="stylesheet" href="Styles/Configuración.css">
 </head>
+
 <body>
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
-                <img src="/Images/LogoOlivia.png" alt="Logo Farmacia" style="width: 200px; height: auto;">
+                <img src="Images/LogoOlivia.png" alt="Logo Farmacia" style="width: 200px; height: auto;">
             </div>
-            
+
             <nav class="menu">
                 <a href="#" class="menu-item active">
                     <i class="fas fa-home"></i>
@@ -67,7 +69,7 @@
             </div>
 
             <div class="user-info">
-                <img src="/Images/LogoUsuario.png" alt="Admin" class="avatar">
+                <img src="Images/LogoUsuario.png" alt="Admin" class="avatar">
                 <div class="user-details">
                     <h4>Admin Farmacia</h4>
                     <p>Administrador</p>
@@ -83,7 +85,7 @@
         <!-- Main Content -->
         <main class="main-content">
             <h1>Dashboard</h1>
-            
+
             <!-- Stats Cards -->
             <div class="stats-container">
                 <div class="stat-card">
@@ -149,7 +151,8 @@
                         <button class="close-inventario" id="closeInventarioBtn">&times;</button>
                     </div>
                     <div class="inventario-controls" style="position: relative;">
-                        <input type="text" id="buscarProducto" placeholder="Buscar por nombre, categoría o proveedor...">
+                        <input type="text" id="buscarProducto"
+                            placeholder="Buscar por nombre, categoría o proveedor...">
                         <div style="position: relative;">
                             <button class="filter-btn" id="filterBtn">
                                 <i class="fas fa-filter"></i>
@@ -162,7 +165,8 @@
                                 <div class="filtro-opcion" data-filtro="fecha">Fecha de Expiración</div>
                             </div>
                         </div>
-                        <button class="nuevo-producto-btn" id="nuevoProductoBtn"><i class="fas fa-plus"></i> Nuevo Producto</button>
+                        <button class="nuevo-producto-btn" id="nuevoProductoBtn"><i class="fas fa-plus"></i> Nuevo
+                            Producto</button>
                     </div>
                     <div class="inventario-table-container">
                         <table class="inventario-table">
@@ -204,7 +208,8 @@
                         <button class="proveedor-filter-btn"><i class="fas fa-search"></i></button>
                         <button class="proveedor-filter-btn"><i class="fas fa-filter"></i></button>
                         <button class="proveedor-filter-btn"><i class="fas fa-sync-alt"></i></button>
-                        <button class="nuevo-proveedor-btn" id="nuevoProveedorBtn"><i class="fas fa-plus"></i> Nuevo Proveedor</button>
+                        <button class="nuevo-proveedor-btn" id="nuevoProveedorBtn"><i class="fas fa-plus"></i> Nuevo
+                            Proveedor</button>
                     </div>
                     <div class="proveedores-tabs">
                         <button class="tab-btn active" data-tab="proveedores">Proveedores</button>
@@ -262,7 +267,8 @@
                         <button class="usuarios-barra-btn"><i class="fas fa-search"></i></button>
                         <button class="usuarios-barra-btn"><i class="fas fa-filter"></i></button>
                         <button class="usuarios-barra-btn"><i class="fas fa-file-export"></i></button>
-                        <button class="nuevo-usuario-btn" id="nuevoClienteBtn"><i class="fas fa-user-plus"></i> Agregar Nuevo Cliente</button>
+                        <button class="nuevo-usuario-btn" id="nuevoClienteBtn"><i class="fas fa-user-plus"></i> Agregar
+                            Nuevo Cliente</button>
                     </div>
                     <table class="usuarios-table clientes-table">
                         <thead>
@@ -287,13 +293,13 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/Scripts/index.js"></script>
-    <script src="/Scripts/Configuración.js"></script>
-    <script src="/Scripts/Estadistica.js"></script>
-    <script src="/Scripts/inventario.js"></script>
-    <script src="/Scripts/proveedores.js"></script>
-    <script src="/Scripts/Usuarios.js"></script>
-    <script src="/Scripts/Factura.js"></script>
+    <script src="Scripts/index.js"></script>
+    <script src="Scripts/Configuración.js"></script>
+    <script src="Scripts/Estadistica.js"></script>
+    <script src="Scripts/inventario.js"></script>
+    <script src="Scripts/proveedores.js"></script>
+    <script src="Scripts/Usuarios.js"></script>
+    <script src="Scripts/Factura.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <!-- Modal de proceso (éxito/error) -->
@@ -315,9 +321,10 @@
                 <div class="form-group">
                     <label for="npImagen">Imagen del Producto</label>
                     <div class="imagen-preview-container">
-                        <img id="npImagenPreview" src="/Images/LogoSoloOlivia.png" alt="Vista previa">
+                        <img id="npImagenPreview" src="Images/LogoSoloOlivia.png" alt="Vista previa">
                         <input type="file" id="npImagen" accept="image/*" style="display: none;">
-                        <button type="button" class="cambiar-imagen-btn" onclick="document.getElementById('npImagen').click()">
+                        <button type="button" class="cambiar-imagen-btn"
+                            onclick="document.getElementById('npImagen').click()">
                             <i class="fas fa-camera"></i> Subir imagen
                         </button>
                     </div>
@@ -355,7 +362,8 @@
                         <label for="npCategoria">Categoría</label>
                         <div class="categoria-select-group">
                             <select id="npCategoria" required></select>
-                            <button type="button" class="add-categoria-btn" id="addCategoriaBtn" title="Agregar nueva categoría">
+                            <button type="button" class="add-categoria-btn" id="addCategoriaBtn"
+                                title="Agregar nueva categoría">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
@@ -380,9 +388,10 @@
                 <div class="form-group">
                     <label for="epImagen">Imagen del Producto</label>
                     <div class="imagen-preview-container">
-                        <img id="epImagenPreview" src="/Images/LogoSoloOlivia.png" alt="Vista previa">
+                        <img id="epImagenPreview" src="Images/LogoSoloOlivia.png" alt="Vista previa">
                         <input type="file" id="epImagen" accept="image/*" style="display: none;">
-                        <button type="button" class="cambiar-imagen-btn" onclick="document.getElementById('epImagen').click()">
+                        <button type="button" class="cambiar-imagen-btn"
+                            onclick="document.getElementById('epImagen').click()">
                             <i class="fas fa-camera"></i> Cambiar imagen
                         </button>
                     </div>
@@ -420,7 +429,8 @@
                         <label for="epCategoria">Categoría</label>
                         <div class="categoria-select-group">
                             <select id="epCategoria" required></select>
-                            <button type="button" class="add-categoria-btn" id="addCategoriaBtnEdit" title="Agregar nueva categoría">
+                            <button type="button" class="add-categoria-btn" id="addCategoriaBtnEdit"
+                                title="Agregar nueva categoría">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
@@ -493,8 +503,10 @@
                     <label>Formato:</label>
                     <div class="export-formats">
                         <button class="export-format-btn" data-format="pdf"><i class="fas fa-file-pdf"></i> PDF</button>
-                        <button class="export-format-btn" data-format="excel"><i class="fas fa-file-excel"></i> Excel</button>
-                        <button class="export-format-btn" data-format="word"><i class="fas fa-file-word"></i> Word</button>
+                        <button class="export-format-btn" data-format="excel"><i class="fas fa-file-excel"></i>
+                            Excel</button>
+                        <button class="export-format-btn" data-format="word"><i class="fas fa-file-word"></i>
+                            Word</button>
                     </div>
                 </div>
                 <div class="export-section">
@@ -569,7 +581,8 @@
                 <div class="form-group productos-grupo">
                     <label>Productos que Ofrece</label>
                     <div class="productos-input-container">
-                        <input type="text" id="npProducto" placeholder="Ingrese un producto y presione Enter o el botón +">
+                        <input type="text" id="npProducto"
+                            placeholder="Ingrese un producto y presione Enter o el botón +">
                         <button type="button" id="agregarProductoBtn" class="agregar-producto-btn">
                             <i class="fas fa-plus"></i>
                         </button>
@@ -624,7 +637,8 @@
                     <input type="text" id="pedidoAnotaciones" placeholder="Más anotaciones para el proveedor...">
                 </div>
                 <div class="pedido-acciones">
-                    <button id="enviarPedidoBtn" class="enviar-pedido-btn"><i class="fas fa-paper-plane"></i> Enviar Pedido</button>
+                    <button id="enviarPedidoBtn" class="enviar-pedido-btn"><i class="fas fa-paper-plane"></i> Enviar
+                        Pedido</button>
                 </div>
             </div>
         </div>
@@ -650,7 +664,8 @@
                         <button class="usuarios-barra-btn"><i class="fas fa-search"></i></button>
                         <button class="usuarios-barra-btn"><i class="fas fa-filter"></i></button>
                         <button class="usuarios-barra-btn"><i class="fas fa-file-export"></i></button>
-                        <button class="nuevo-usuario-btn" id="nuevoUsuarioBtn"><i class="fas fa-user-plus"></i> Nuevo Usuario</button>
+                        <button class="nuevo-usuario-btn" id="nuevoUsuarioBtn"><i class="fas fa-user-plus"></i> Nuevo
+                            Usuario</button>
                     </div>
                     <table class="usuarios-table">
                         <thead>
@@ -674,7 +689,8 @@
                         <button class="usuarios-barra-btn"><i class="fas fa-search"></i></button>
                         <button class="usuarios-barra-btn"><i class="fas fa-filter"></i></button>
                         <button class="usuarios-barra-btn"><i class="fas fa-file-export"></i></button>
-                        <button class="nuevo-usuario-btn" id="nuevoRolBtn"><i class="fas fa-user-shield"></i> Nuevo Rol</button>
+                        <button class="nuevo-usuario-btn" id="nuevoRolBtn"><i class="fas fa-user-shield"></i> Nuevo
+                            Rol</button>
                     </div>
                     <table class="usuarios-table">
                         <thead>
@@ -713,12 +729,12 @@
                         </thead>
                         <tbody id="clientesBody">
                             <!-- JS llenará aquí -->
-                        </tbody>
-                    </table>
-                </div>
-                -->
+                </tbody>
+                </table>
             </div>
+            -->
         </div>
+    </div>
     </div>
 
     <!-- Modal Nuevo Usuario -->
@@ -759,7 +775,8 @@
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="guardar-btn"><i class="fas fa-save"></i> Guardar</button>
-                    <button type="button" class="cancelar-btn" id="cancelarNuevoUsuarioBtn"><i class="fas fa-times"></i> Cancelar</button>
+                    <button type="button" class="cancelar-btn" id="cancelarNuevoUsuarioBtn"><i class="fas fa-times"></i>
+                        Cancelar</button>
                 </div>
             </form>
         </div>
@@ -795,7 +812,8 @@
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="guardar-btn"><i class="fas fa-save"></i> Guardar</button>
-                    <button type="button" class="cancelar-btn" id="cancelarNuevoRolBtn"><i class="fas fa-times"></i> Cancelar</button>
+                    <button type="button" class="cancelar-btn" id="cancelarNuevoRolBtn"><i class="fas fa-times"></i>
+                        Cancelar</button>
                 </div>
             </form>
         </div>
@@ -889,23 +907,34 @@
                         </thead>
                         <tbody id="cfProductosBody">
                             <tr>
-                                <td><button type="button" class="eliminar-fila-btn"><i class="fas fa-trash"></i></button></td>
+                                <td><button type="button" class="eliminar-fila-btn"><i
+                                            class="fas fa-trash"></i></button></td>
                                 <td>1</td>
-                                <td><select class="styled-select"><option>Selecciona categoría</option></select></td>
-                                <td><select class="styled-select"><option>Seleccionar producto</option></select></td>
-                                <td><select class="styled-select"><option>Seleccionar C</option></select></td>
-                                <td><input type="number" min="0" value="0" class="styled-input" placeholder="Cantidad"></td>
-                                <td><input type="number" min="0" value="0" class="styled-input" placeholder="Precio"></td>
-                                <td><input type="number" min="0" value="0" class="styled-input" placeholder="Descuento"></td>
+                                <td><select class="styled-select">
+                                        <option>Selecciona categoría</option>
+                                    </select></td>
+                                <td><select class="styled-select">
+                                        <option>Seleccionar producto</option>
+                                    </select></td>
+                                <td><select class="styled-select">
+                                        <option>Seleccionar C</option>
+                                    </select></td>
+                                <td><input type="number" min="0" value="0" class="styled-input" placeholder="Cantidad">
+                                </td>
+                                <td><input type="number" min="0" value="0" class="styled-input" placeholder="Precio">
+                                </td>
+                                <td><input type="number" min="0" value="0" class="styled-input" placeholder="Descuento">
+                                </td>
                                 <td><select class="styled-select" placeholder="Tipo de descuento">
-                                  <option>Sin descuento</option>
-                                  <option>Porcentaje</option>
-                                  <option>Importe fijo</option>
-                                  <option>2x1</option>
-                                  <option>3x2</option>
-                                  <option>Descuento especial</option>
-                                </select></td>
-                                <td><input type="number" min="0" value="0" class="styled-input" placeholder="Total" readonly></td>
+                                        <option>Sin descuento</option>
+                                        <option>Porcentaje</option>
+                                        <option>Importe fijo</option>
+                                        <option>2x1</option>
+                                        <option>3x2</option>
+                                        <option>Descuento especial</option>
+                                    </select></td>
+                                <td><input type="number" min="0" value="0" class="styled-input" placeholder="Total"
+                                        readonly></td>
                             </tr>
                         </tbody>
                     </table>
@@ -913,11 +942,17 @@
                 </div>
                 <!-- Bloque de totales debajo de la tabla -->
                 <div class="factura-totales-resumen">
-                    <div class="factura-totales-item"><span>Precio total:</span><span>$ <span id="ftPrecioTotal">0</span></span></div>
-                    <div class="factura-totales-item"><span>Descuento total:</span><span>$ <span id="ftDescuentoTotal">0</span></span></div>
-                    <div class="factura-totales-item"><span>Importe neto por pagar:</span><span>$ <span id="ftImporteNeto">0</span></span></div>
-                    <div class="factura-totales-item"><span>Pagar ahora:</span><span>$ <input type="number" id="ftPagarAhora" class="styled-input" min="0" value="0" style="width:100px;display:inline-block;"></span></div>
-                    <div class="factura-totales-item"><span>Importe a deber:</span><span>$ <span id="ftImporteDeber">0</span></span></div>
+                    <div class="factura-totales-item"><span>Precio total:</span><span>$ <span
+                                id="ftPrecioTotal">0</span></span></div>
+                    <div class="factura-totales-item"><span>Descuento total:</span><span>$ <span
+                                id="ftDescuentoTotal">0</span></span></div>
+                    <div class="factura-totales-item"><span>Importe neto por pagar:</span><span>$ <span
+                                id="ftImporteNeto">0</span></span></div>
+                    <div class="factura-totales-item"><span>Pagar ahora:</span><span>$ <input type="number"
+                                id="ftPagarAhora" class="styled-input" min="0" value="0"
+                                style="width:100px;display:inline-block;"></span></div>
+                    <div class="factura-totales-item"><span>Importe a deber:</span><span>$ <span
+                                id="ftImporteDeber">0</span></span></div>
                 </div>
                 <div class="crear-factura-footer">
                     <button type="submit" class="guardar-btn">Guardar Factura</button>
@@ -973,66 +1008,66 @@
 
     <!-- Modal Pagos de Factura -->
     <div id="pagosFacturaModal" class="pagos-factura-modal" style="display:none;">
-      <div class="pagos-factura-panel">
-        <div class="pagos-factura-header">
-          <h3 id="pagosFacturaTitulo">Pagos de factura N° : </h3>
-          <p id="pagosFacturaCliente"></p>
+        <div class="pagos-factura-panel">
+            <div class="pagos-factura-header">
+                <h3 id="pagosFacturaTitulo">Pagos de factura N° : </h3>
+                <p id="pagosFacturaCliente"></p>
+            </div>
+            <table class="pagos-factura-table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Importe</th>
+                        <th>Pago con</th>
+                        <th>Información</th>
+                        <th>Recibido por</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="pagosFacturaBody">
+                    <!-- JS llenará aquí -->
+                </tbody>
+            </table>
+            <div class="pagos-factura-totales">
+                <div><label>Total a pagar</label><input type="text" id="pagosFacturaTotal" readonly></div>
+                <div><label>Total pagado</label><input type="text" id="pagosFacturaPagado" readonly></div>
+                <div><label>Importe total a pagar</label><input type="text" id="pagosFacturaDeber" readonly></div>
+            </div>
+            <button id="cerrarPagosFacturaBtn" class="cerrar-pagos-factura-btn">Cerrar</button>
         </div>
-        <table class="pagos-factura-table">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Importe</th>
-              <th>Pago con</th>
-              <th>Información</th>
-              <th>Recibido por</th>
-              <th>Eliminar</th>
-            </tr>
-          </thead>
-          <tbody id="pagosFacturaBody">
-            <!-- JS llenará aquí -->
-          </tbody>
-        </table>
-        <div class="pagos-factura-totales">
-          <div><label>Total a pagar</label><input type="text" id="pagosFacturaTotal" readonly></div>
-          <div><label>Total pagado</label><input type="text" id="pagosFacturaPagado" readonly></div>
-          <div><label>Importe total a pagar</label><input type="text" id="pagosFacturaDeber" readonly></div>
-        </div>
-        <button id="cerrarPagosFacturaBtn" class="cerrar-pagos-factura-btn">Cerrar</button>
-      </div>
     </div>
 
     <!-- Modal Abonar a Factura -->
     <div id="abonarFacturaModal" class="abonar-factura-modal" style="display:none;">
-      <div class="abonar-factura-panel">
-        <div class="abonar-factura-header">
-          <h3 id="abonarFacturaTitulo">Pago de factura N° : </h3>
+        <div class="abonar-factura-panel">
+            <div class="abonar-factura-header">
+                <h3 id="abonarFacturaTitulo">Pago de factura N° : </h3>
+            </div>
+            <form id="formAbonarFactura">
+                <div class="form-group">
+                    <label for="abonarFecha">Fecha</label>
+                    <input type="date" id="abonarFecha" required>
+                </div>
+                <div class="form-group">
+                    <label for="abonarImporte">Importe</label>
+                    <input type="number" id="abonarImporte" min="0" value="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="abonarMetodo">Pagado en</label>
+                    <select id="abonarMetodo" required>
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="Tarjeta">Tarjeta</option>
+                        <option value="Transferencia">Transferencia</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="abonar-factura-footer">
+                    <button type="submit" class="guardar-btn">Guardar</button>
+                    <button type="button" class="cancelar-btn" id="cerrarAbonarFacturaBtn">Cerrar</button>
+                </div>
+            </form>
         </div>
-        <form id="formAbonarFactura">
-          <div class="form-group">
-            <label for="abonarFecha">Fecha</label>
-            <input type="date" id="abonarFecha" required>
-          </div>
-          <div class="form-group">
-            <label for="abonarImporte">Importe</label>
-            <input type="number" id="abonarImporte" min="0" value="0" required>
-          </div>
-          <div class="form-group">
-            <label for="abonarMetodo">Pagado en</label>
-            <select id="abonarMetodo" required>
-              <option value="Efectivo">Efectivo</option>
-              <option value="Tarjeta">Tarjeta</option>
-              <option value="Transferencia">Transferencia</option>
-              <option value="Cheque">Cheque</option>
-              <option value="Otro">Otro</option>
-            </select>
-          </div>
-          <div class="abonar-factura-footer">
-            <button type="submit" class="guardar-btn">Guardar</button>
-            <button type="button" class="cancelar-btn" id="cerrarAbonarFacturaBtn">Cerrar</button>
-          </div>
-        </form>
-      </div>
     </div>
 
     <!-- Panel de Configuración -->
@@ -1331,9 +1366,11 @@
                 <div class="form-group">
                     <label for="ecImagen">Imagen del Cliente</label>
                     <div class="imagen-preview-container">
-                        <img id="ecImagenPreview" src="/Images/LogoSoloOlivia.png" alt="Vista previa" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover;">
+                        <img id="ecImagenPreview" src="Images/LogoSoloOlivia.png" alt="Vista previa"
+                            style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover;">
                         <input type="file" id="ecImagen" accept="image/*" style="display: none;">
-                        <button type="button" class="cambiar-imagen-btn" onclick="document.getElementById('ecImagen').click()">
+                        <button type="button" class="cambiar-imagen-btn"
+                            onclick="document.getElementById('ecImagen').click()">
                             <i class="fas fa-camera"></i> Cambiar imagen
                         </button>
                     </div>
@@ -1360,7 +1397,8 @@
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="guardar-btn"><i class="fas fa-save"></i> Guardar Cambios</button>
-                    <button type="button" class="cancelar-btn" id="cancelarEditarClienteBtn"><i class="fas fa-times"></i> Cancelar</button>
+                    <button type="button" class="cancelar-btn" id="cancelarEditarClienteBtn"><i
+                            class="fas fa-times"></i> Cancelar</button>
                 </div>
             </form>
         </div>
@@ -1377,9 +1415,11 @@
                 <div class="form-group">
                     <label for="ncImagen">Imagen del Cliente</label>
                     <div class="imagen-preview-container">
-                        <img id="ncImagenPreview" src="/Images/LogoSoloOlivia.png" alt="Vista previa" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover;">
+                        <img id="ncImagenPreview" src="Images/LogoSoloOlivia.png" alt="Vista previa"
+                            style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover;">
                         <input type="file" id="ncImagen" accept="image/*" style="display: none;">
-                        <button type="button" class="cambiar-imagen-btn" onclick="document.getElementById('ncImagen').click()">
+                        <button type="button" class="cambiar-imagen-btn"
+                            onclick="document.getElementById('ncImagen').click()">
                             <i class="fas fa-camera"></i> Subir imagen
                         </button>
                     </div>
@@ -1406,10 +1446,12 @@
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="guardar-btn"><i class="fas fa-save"></i> Guardar Cliente</button>
-                    <button type="button" class="cancelar-btn" id="cancelarNuevoClienteBtn"><i class="fas fa-times"></i> Cancelar</button>
+                    <button type="button" class="cancelar-btn" id="cancelarNuevoClienteBtn"><i class="fas fa-times"></i>
+                        Cancelar</button>
                 </div>
             </form>
         </div>
     </div>
 </body>
+
 </html>

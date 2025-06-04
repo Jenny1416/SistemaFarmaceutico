@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('userSession', JSON.stringify(userSession));
 
             // Redirigir al dashboard
-            window.location.href = '/index.html';
+            window.location.href = '/SistemaFarmaceutico/SistemaEnfermeria/index.html';
         } else {
             alert('Credenciales incorrectas. Por favor, intente nuevamente.');
         }

@@ -503,7 +503,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 sessionStorage.clear();
                 
                 // Redirigir al login
-                window.location.href = '/Pages/Login.html';
+                window.location.href = 'Views/Login.php';
             }
         });
     }
