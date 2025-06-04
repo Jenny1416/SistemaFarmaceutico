@@ -6,13 +6,12 @@ class Usuario {
         $this->conexion = $db;
     }
 
-    public function obtenerUsuarioPorCredenciales($id) {
-        $query = "SELECT * FROM usuarios WHERE id = ?";
+    public function obtenerUsuarioPorCredenciales($correo) {
+        $query = "SELECT * FROM usuarios WHERE correo = ?";
         $stmt = $this->conexion->prepare($query);
-        $stmt->bind_param("s", $id);
+        $stmt->bind_param("s", $correo);
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
     }
 }
 ?>
-

@@ -255,26 +255,42 @@ document.addEventListener('DOMContentLoaded', function() {
       usuariosModal.style.display = 'none';
   });
 
-  function cargarUsuarios() {
-      fetch('Controllers/UsuariosController.php')
-          .then(res => res.json())
-          .then(data => {
-              usuariosBody.innerHTML = '';
-              data.usuarios.forEach(usuario => {
-                  usuariosBody.innerHTML += `
-                      <tr>
-                          <td>${usuario.nombre} <br><small>${usuario.correo}</small></td>
-                          <td>${usuario.rol}</td>
-                          <td>${usuario.fecha_actualizacion || '-'}</td>
-                          <td>-</td>
-                          <td>
-                              <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                              <button class="delete-btn"><i class="fas fa-trash"></i></button>
-                          </td>
-                      </tr>
-                  `;
-              });
-          });
+  document.getElementById('buscarUsuario').addEventListener('input', function() {
+    const filtro = this.value.trim();
+    cargarUsuarios(filtro);
+  });
+  document.querySelector('.usuarios-barra-btn i.fas.fa-search').parentElement.addEventListener('click', function() {
+    const filtro = document.getElementById('buscarUsuario').value.trim();
+    cargarUsuarios(filtro);
+  });
+  document.querySelector('.usuarios-barra-btn i.fas.fa-filter').parentElement.addEventListener('click', function() {
+    const filtro = document.getElementById('buscarUsuario').value.trim();
+    cargarUsuarios(filtro);
+  });
+
+  // Modifica cargarUsuarios para aceptar filtro:
+  function cargarUsuarios(filtro = '') {
+    let url = 'Controllers/UsuariosController.php';
+    if (filtro) url += '?filtro=' + encodeURIComponent(filtro);
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        usuariosBody.innerHTML = '';
+        data.usuarios.forEach(usuario => {
+          usuariosBody.innerHTML += `
+            <tr>
+              <td>${usuario.nombre} <br><small>${usuario.correo}</small></td>
+              <td>${usuario.rol}</td>
+              <td>${usuario.fecha_actualizacion || '-'}</td>
+              <td>-</td>
+              <td>
+                <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                <button class="delete-btn"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          `;
+        });
+      });
   }
 
   // Abrir modal desde el menú lateral
@@ -372,175 +388,291 @@ document.addEventListener('DOMContentLoaded', function() {
       cerrarNuevoCliente();
     };
   }
-});
 
-// --- CLIENTES PANEL EXCLUSIVO ---
-function renderClientesTabla() {
-  const tbody = document.getElementById('clientesBody');
-  if (!tbody) return;
-  tbody.innerHTML = '';
-  clientesDemo.forEach(c => {
-    const iniciales = c.nombre.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
-    tbody.innerHTML += `
-      <tr data-id="${c.id}">
-        <td style="text-align:center;">
-          <img src="${c.imagen ? c.imagen : '/Images/LogoSoloOlivia.png'}" alt="${c.nombre}" class="cliente-img">
-        </td>
-        <td><b>${c.nombre}</b></td>
-        <td>${c.email}</td>
-        <td>${c.telefono}</td>
-        <td style="text-align:center;">${c.ventas}</td>
-        <td>${c.productos}</td>
-        <td style="text-align:center;">
-          <button class="acciones-btn editar-cliente" title="Editar"><i class="fas fa-pen"></i></button>
-          <button class="acciones-btn eliminar-cliente" title="Eliminar"><i class="fas fa-trash"></i></button>
-        </td>
-      </tr>
-    `;
-  });
-}
-function filtrarTablaClientes() {
-  const val = document.getElementById('buscarCliente').value.toLowerCase();
-  const tbody = document.getElementById('clientesBody');
-  Array.from(tbody.children).forEach(tr => {
-    tr.style.display = tr.textContent.toLowerCase().includes(val) ? '' : 'none';
-  });
-}
-function accionesClientes() {
-  document.getElementById('clientesBody').onclick = function(e) {
-    const tr = e.target.closest('tr');
-    const id = tr ? tr.getAttribute('data-id') : null;
-    if (e.target.closest('.editar-cliente')) {
-      const cliente = clientesDemo.find(c => c.id == id);
-      if (cliente) {
-        document.getElementById('ecNombre').value = cliente.nombre;
-        document.getElementById('ecEmail').value = cliente.email;
-        document.getElementById('ecTelefono').value = cliente.telefono;
-        document.getElementById('ecVentas').value = cliente.ventas;
-        document.getElementById('ecProductos').value = cliente.productos;
-        document.getElementById('editarClienteModal').style.display = 'flex';
-        document.getElementById('editarClienteModal').setAttribute('data-id', id);
-        // Imagen
-        const ecImagenPreview = document.getElementById('ecImagenPreview');
-        ecImagenPreview.src = cliente.imagen ? cliente.imagen : '/Images/LogoSoloOlivia.png';
-        ecImagenPreview.removeAttribute('data-new-img');
-      }
-    }
-    if (e.target.closest('.eliminar-cliente')) {
-      if (confirm('¿Seguro que deseas eliminar este cliente?')) {
-        const idx = clientesDemo.findIndex(c => c.id == id);
-        if (idx !== -1) {
-          clientesDemo.splice(idx, 1);
-          renderClientesTabla();
-          accionesClientes();
-          mostrarProcesoModal('exito', 'Cliente eliminado exitosamente');
-        }
-      }
-    }
-  };
-}
+  // MODAL NUEVO USUARIO
+  const nuevoUsuarioBtn = document.getElementById('nuevoUsuarioBtn');
+  const nuevoUsuarioModal = document.getElementById('nuevoUsuarioModal');
+  const closeNuevoUsuarioModal = document.getElementById('closeNuevoUsuarioModal');
+  const cancelarNuevoUsuarioBtn = document.getElementById('cancelarNuevoUsuarioBtn');
+  const formNuevoUsuario = document.getElementById('formNuevoUsuario');
 
-// Inicialización del panel de clientes
-function initClientesPanel() {
-  renderClientesTabla();
-  accionesClientes();
-  document.getElementById('buscarCliente').addEventListener('input', filtrarTablaClientes);
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  // Botón y panel de clientes
-  const btnClientes = document.getElementById('btnClientes');
-  const clientesModal = document.getElementById('clientesModal');
-  const closeClientesModal = document.getElementById('closeClientesModal');
-  if (btnClientes && clientesModal) {
-    btnClientes.onclick = function(e) {
+  if (nuevoUsuarioBtn && nuevoUsuarioModal) {
+    nuevoUsuarioBtn.onclick = function() {
+      nuevoUsuarioModal.style.display = 'flex';
+      formNuevoUsuario.reset();
+    };
+  }
+  if (closeNuevoUsuarioModal) closeNuevoUsuarioModal.onclick = cerrarNuevoUsuario;
+  if (cancelarNuevoUsuarioBtn) cancelarNuevoUsuarioBtn.onclick = cerrarNuevoUsuario;
+  if (nuevoUsuarioModal) {
+    nuevoUsuarioModal.onclick = function(e) {
+      if (e.target === nuevoUsuarioModal) cerrarNuevoUsuario();
+    };
+  }
+  function cerrarNuevoUsuario() {
+    nuevoUsuarioModal.style.display = 'none';
+    formNuevoUsuario.reset();
+  }
+  if (formNuevoUsuario) {
+    formNuevoUsuario.onsubmit = function(e) {
       e.preventDefault();
-      clientesModal.style.display = 'flex';
-      initClientesPanel();
-    };
-  }
-  if (closeClientesModal && clientesModal) {
-    closeClientesModal.onclick = function() {
-      clientesModal.style.display = 'none';
-    };
-  }
-  if (clientesModal) {
-    window.addEventListener('click', function(e) {
-      if (e.target === clientesModal) {
-        clientesModal.style.display = 'none';
+      const nombre = document.getElementById('nuNombre').value.trim();
+      const correo = document.getElementById('nuEmail').value.trim();
+      const rol = document.getElementById('nuRol').value;
+      const clave = document.getElementById('nuPassword').value;
+      if (!nombre || !correo || !rol || !clave) {
+        alert('Completa todos los campos');
+        return;
       }
+      const formData = new FormData();
+      formData.append('nombre', nombre);
+      formData.append('correo', correo);
+      formData.append('rol', rol);
+      formData.append('clave', clave);
+
+      fetch('Controllers/UsuariosController.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          cerrarNuevoUsuario();
+          cargarUsuarios(); // Recarga la tabla
+          alert('Usuario creado correctamente');
+        } else {
+          alert(data.message || 'Error al crear usuario');
+        }
+      });
+    };
+  }
+
+  // --- CLIENTES PANEL EXCLUSIVO ---
+  function renderClientesTabla() {
+    const tbody = document.getElementById('clientesBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    clientesDemo.forEach(c => {
+      const iniciales = c.nombre.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+      tbody.innerHTML += `
+        <tr data-id="${c.id}">
+          <td style="text-align:center;">
+            <img src="${c.imagen ? c.imagen : '/Images/LogoSoloOlivia.png'}" alt="${c.nombre}" class="cliente-img">
+          </td>
+          <td><b>${c.nombre}</b></td>
+          <td>${c.email}</td>
+          <td>${c.telefono}</td>
+          <td style="text-align:center;">${c.ventas}</td>
+          <td>${c.productos}</td>
+          <td style="text-align:center;">
+            <button class="acciones-btn editar-cliente" title="Editar"><i class="fas fa-pen"></i></button>
+            <button class="acciones-btn eliminar-cliente" title="Eliminar"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>
+      `;
     });
   }
+  function filtrarTablaClientes() {
+    const val = document.getElementById('buscarCliente').value.toLowerCase();
+    const tbody = document.getElementById('clientesBody');
+    Array.from(tbody.children).forEach(tr => {
+      tr.style.display = tr.textContent.toLowerCase().includes(val) ? '' : 'none';
+    });
+  }
+  function accionesClientes() {
+    document.getElementById('clientesBody').onclick = function(e) {
+      const tr = e.target.closest('tr');
+      const id = tr ? tr.getAttribute('data-id') : null;
+      if (e.target.closest('.editar-cliente')) {
+        const cliente = clientesDemo.find(c => c.id == id);
+        if (cliente) {
+          document.getElementById('ecNombre').value = cliente.nombre;
+          document.getElementById('ecEmail').value = cliente.email;
+          document.getElementById('ecTelefono').value = cliente.telefono;
+          document.getElementById('ecVentas').value = cliente.ventas;
+          document.getElementById('ecProductos').value = cliente.productos;
+          document.getElementById('editarClienteModal').style.display = 'flex';
+          document.getElementById('editarClienteModal').setAttribute('data-id', id);
+          // Imagen
+          const ecImagenPreview = document.getElementById('ecImagenPreview');
+          ecImagenPreview.src = cliente.imagen ? cliente.imagen : '/Images/LogoSoloOlivia.png';
+          ecImagenPreview.removeAttribute('data-new-img');
+        }
+      }
+      if (e.target.closest('.eliminar-cliente')) {
+        if (confirm('¿Seguro que deseas eliminar este cliente?')) {
+          const idx = clientesDemo.findIndex(c => c.id == id);
+          if (idx !== -1) {
+            clientesDemo.splice(idx, 1);
+            renderClientesTabla();
+            accionesClientes();
+            mostrarProcesoModal('exito', 'Cliente eliminado exitosamente');
+          }
+        }
+      }
+    };
+  }
 
-  // --- MODAL NUEVO CLIENTE ---
-  const nuevoClienteBtn = document.getElementById('nuevoClienteBtn');
-  const nuevoClienteModal = document.getElementById('nuevoClienteModal');
-  const closeNuevoClienteModal = document.getElementById('closeNuevoClienteModal');
-  const cancelarNuevoClienteBtn = document.getElementById('cancelarNuevoClienteBtn');
-  const formNuevoCliente = document.getElementById('formNuevoCliente');
-  const ncImagenInput = document.getElementById('ncImagen');
-  const ncImagenPreview = document.getElementById('ncImagenPreview');
+  // Inicialización del panel de clientes
+  function initClientesPanel() {
+    renderClientesTabla();
+    accionesClientes();
+    document.getElementById('buscarCliente').addEventListener('input', filtrarTablaClientes);
+  }
 
-  if (nuevoClienteBtn && nuevoClienteModal) {
-    nuevoClienteBtn.onclick = function() {
-      nuevoClienteModal.style.display = 'flex';
+  document.addEventListener('DOMContentLoaded', function() {
+    // Botón y panel de clientes
+    const btnClientes = document.getElementById('btnClientes');
+    const clientesModal = document.getElementById('clientesModal');
+    const closeClientesModal = document.getElementById('closeClientesModal');
+    if (btnClientes && clientesModal) {
+      btnClientes.onclick = function(e) {
+        e.preventDefault();
+        clientesModal.style.display = 'flex';
+        initClientesPanel();
+      };
+    }
+    if (closeClientesModal && clientesModal) {
+      closeClientesModal.onclick = function() {
+        clientesModal.style.display = 'none';
+      };
+    }
+    if (clientesModal) {
+      window.addEventListener('click', function(e) {
+        if (e.target === clientesModal) {
+          clientesModal.style.display = 'none';
+        }
+      });
+    }
+
+    // --- MODAL NUEVO CLIENTE ---
+    const nuevoClienteBtn = document.getElementById('nuevoClienteBtn');
+    const nuevoClienteModal = document.getElementById('nuevoClienteModal');
+    const closeNuevoClienteModal = document.getElementById('closeNuevoClienteModal');
+    const cancelarNuevoClienteBtn = document.getElementById('cancelarNuevoClienteBtn');
+    const formNuevoCliente = document.getElementById('formNuevoCliente');
+    const ncImagenInput = document.getElementById('ncImagen');
+    const ncImagenPreview = document.getElementById('ncImagenPreview');
+
+    if (nuevoClienteBtn && nuevoClienteModal) {
+      nuevoClienteBtn.onclick = function() {
+        nuevoClienteModal.style.display = 'flex';
+        formNuevoCliente.reset();
+        ncImagenPreview.src = '/Images/LogoSoloOlivia.png';
+        ncImagenPreview.removeAttribute('data-new-img');
+      };
+    }
+    if (closeNuevoClienteModal) closeNuevoClienteModal.onclick = cerrarNuevoCliente;
+    if (cancelarNuevoClienteBtn) cancelarNuevoClienteBtn.onclick = cerrarNuevoCliente;
+    if (nuevoClienteModal) {
+      nuevoClienteModal.onclick = function(e) {
+        if (e.target === nuevoClienteModal) cerrarNuevoCliente();
+      };
+    }
+    function cerrarNuevoCliente() {
+      nuevoClienteModal.style.display = 'none';
       formNuevoCliente.reset();
       ncImagenPreview.src = '/Images/LogoSoloOlivia.png';
       ncImagenPreview.removeAttribute('data-new-img');
-    };
-  }
-  if (closeNuevoClienteModal) closeNuevoClienteModal.onclick = cerrarNuevoCliente;
-  if (cancelarNuevoClienteBtn) cancelarNuevoClienteBtn.onclick = cerrarNuevoCliente;
-  if (nuevoClienteModal) {
-    nuevoClienteModal.onclick = function(e) {
-      if (e.target === nuevoClienteModal) cerrarNuevoCliente();
-    };
-  }
-  function cerrarNuevoCliente() {
-    nuevoClienteModal.style.display = 'none';
-    formNuevoCliente.reset();
-    ncImagenPreview.src = '/Images/LogoSoloOlivia.png';
-    ncImagenPreview.removeAttribute('data-new-img');
-  }
-  if (ncImagenInput) {
-    ncImagenInput.onchange = function() {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          ncImagenPreview.src = e.target.result;
-          ncImagenPreview.setAttribute('data-new-img', e.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-  }
-  if (formNuevoCliente) {
-    formNuevoCliente.onsubmit = function(e) {
-      e.preventDefault();
-      const nombre = document.getElementById('ncNombre').value.trim();
-      const email = document.getElementById('ncEmail').value.trim();
-      const telefono = document.getElementById('ncTelefono').value.trim();
-      const ventas = parseInt(document.getElementById('ncVentas').value);
-      const productos = document.getElementById('ncProductos').value.trim();
-      const imagen = ncImagenPreview.getAttribute('data-new-img') || '/Images/LogoSoloOlivia.png';
-      if (!nombre || !email || !telefono || isNaN(ventas) || !productos) {
-        mostrarProcesoModal('error', 'Por favor, completa todos los campos correctamente.');
-        return;
-      }
-      clientesDemo.push({
-        id: Date.now(),
-        nombre,
-        email,
-        telefono,
-        ventas,
-        productos,
-        imagen
-      });
-      renderClientesTabla();
-      accionesClientes();
-      mostrarProcesoModal('exito', '¡Cliente agregado exitosamente!');
-      cerrarNuevoCliente();
-    };
-  }
+    }
+    if (ncImagenInput) {
+      ncImagenInput.onchange = function() {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            ncImagenPreview.src = e.target.result;
+            ncImagenPreview.setAttribute('data-new-img', e.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+    }
+    if (formNuevoCliente) {
+      formNuevoCliente.onsubmit = function(e) {
+        e.preventDefault();
+        const nombre = document.getElementById('ncNombre').value.trim();
+        const email = document.getElementById('ncEmail').value.trim();
+        const telefono = document.getElementById('ncTelefono').value.trim();
+        const ventas = parseInt(document.getElementById('ncVentas').value);
+        const productos = document.getElementById('ncProductos').value.trim();
+        const imagen = ncImagenPreview.getAttribute('data-new-img') || '/Images/LogoSoloOlivia.png';
+        if (!nombre || !email || !telefono || isNaN(ventas) || !productos) {
+          mostrarProcesoModal('error', 'Por favor, completa todos los campos correctamente.');
+          return;
+        }
+        clientesDemo.push({
+          id: Date.now(),
+          nombre,
+          email,
+          telefono,
+          ventas,
+          productos,
+          imagen
+        });
+        renderClientesTabla();
+        accionesClientes();
+        mostrarProcesoModal('exito', '¡Cliente agregado exitosamente!');
+        cerrarNuevoCliente();
+      };
+    }
+
+    // MODAL NUEVO USUARIO
+    const nuevoUsuarioBtn = document.getElementById('nuevoUsuarioBtn');
+    const nuevoUsuarioModal = document.getElementById('nuevoUsuarioModal');
+    const closeNuevoUsuarioModal = document.getElementById('closeNuevoUsuarioModal');
+    const cancelarNuevoUsuarioBtn = document.getElementById('cancelarNuevoUsuarioBtn');
+    const formNuevoUsuario = document.getElementById('formNuevoUsuario');
+
+    if (nuevoUsuarioBtn && nuevoUsuarioModal) {
+      nuevoUsuarioBtn.onclick = function() {
+        nuevoUsuarioModal.style.display = 'flex';
+        formNuevoUsuario.reset();
+      };
+    }
+    if (closeNuevoUsuarioModal) closeNuevoUsuarioModal.onclick = cerrarNuevoUsuario;
+    if (cancelarNuevoUsuarioBtn) cancelarNuevoUsuarioBtn.onclick = cerrarNuevoUsuario;
+    if (nuevoUsuarioModal) {
+      nuevoUsuarioModal.onclick = function(e) {
+        if (e.target === nuevoUsuarioModal) cerrarNuevoUsuario();
+      };
+    }
+    function cerrarNuevoUsuario() {
+      nuevoUsuarioModal.style.display = 'none';
+      formNuevoUsuario.reset();
+    }
+    if (formNuevoUsuario) {
+      formNuevoUsuario.onsubmit = function(e) {
+        e.preventDefault();
+        const nombre = document.getElementById('nuNombre').value.trim();
+        const correo = document.getElementById('nuEmail').value.trim();
+        const rol = document.getElementById('nuRol').value;
+        const clave = document.getElementById('nuPassword').value;
+        if (!nombre || !correo || !rol || !clave) {
+          alert('Completa todos los campos');
+          return;
+        }
+        const formData = new FormData();
+        formData.append('nombre', nombre);
+        formData.append('correo', correo);
+        formData.append('rol', rol);
+        formData.append('clave', clave);
+
+        fetch('Controllers/UsuariosController.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            cerrarNuevoUsuario();
+            cargarUsuarios(); // Recarga la tabla
+            alert('Usuario creado correctamente');
+          } else {
+            alert(data.message || 'Error al crear usuario');
+          }
+        });
+      };
+    }
+  });
 });

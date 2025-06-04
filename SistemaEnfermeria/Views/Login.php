@@ -24,14 +24,14 @@
         
         <div class="login-container">
             <h2 style="text-align: center; color: #0077be; margin-bottom: 2rem;">Iniciar Sesión</h2>
-            <form>
+            <form method="POST" action="">
                 <div class="form-group">
-                    <label for="cedula">Identificación</label>
-                    <input type="text" id="cedula" required>
+                    <label for="correo">Correo</label>
+                    <input type="email" id="correo" name="correo" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Contraseña</label>
-                    <input type="password" id="password" required>
+                    <input type="password" id="password" name="password" required>
                 </div>
                 <button type="submit" class="submit-btn">ENTRAR</button>
             </form>

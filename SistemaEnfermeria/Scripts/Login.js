@@ -35,25 +35,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Manejar el envío del formulario de login
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
         const formData = new FormData(loginForm);
-
         try {
             const response = await fetch('../Controllers/AuthController.php', {
                 method: 'POST',
                 body: formData
             });
-
             const data = await response.json();
-
             if (data.success) {
-                localStorage.setItem('userSession', JSON.stringify(data.usuario));
                 window.location.href = '../index.php';
             } else {
-                alert('❌ Credenciales incorrectas.');
+                alert(data.message || '❌ Credenciales incorrectas.');
             }
         } catch (error) {
-            console.error('Error en la solicitud:', error);
             alert('❌ Error de conexión con el servidor.');
         }
     });

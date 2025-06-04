@@ -14,10 +14,9 @@ class AuthController {
         $this->usuarioModel = new Usuario($db);
     }
 
-    public function login($id, $clave) {
-        $usuario = $this->usuarioModel->obtenerUsuarioPorCredenciales($id);
+    public function login($correo, $clave) {
+        $usuario = $this->usuarioModel->obtenerUsuarioPorCredenciales($correo);
 
-        // Comparación directa de la clave (sin hash)
         if ($usuario && $clave === $usuario['clave']) {
             $_SESSION['usuario'] = [
                 'id' => $usuario['id'],
@@ -26,9 +25,7 @@ class AuthController {
                 'rol' => $usuario['rol']
             ];
             $_SESSION['registro_actividad'] = [];
-
             $this->registrarActividad("Inicio de sesión");
-
             echo json_encode(['success' => true, 'usuario' => $_SESSION['usuario']]);
             exit();
         } else {
@@ -47,11 +44,11 @@ class AuthController {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header('Content-Type: application/json');
-    if (!isset($_POST["id"]) || !isset($_POST["password"])) {
+    if (!isset($_POST["correo"]) || !isset($_POST["password"])) {
         echo json_encode(['success' => false, 'message' => 'Faltan datos']);
         exit();
     }
     $authController = new AuthController($conn);
-    $authController->login($_POST["id"], $_POST["password"]);
+    $authController->login($_POST["correo"], $_POST["password"]);
 }
 ?>
