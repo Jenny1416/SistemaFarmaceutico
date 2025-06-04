@@ -6,12 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const circleTransition = document.querySelector('.circle-transition');
     const loginForm = document.querySelector('form');
 
-    // Usuario de ejemplo
-    const usuarioEjemplo = {
-        cedula: '1234',
-        password: 'admin123'
-    };
-
     // Mostrar el botón de inicio después de 3 segundos
     setTimeout(() => {
         startButton.classList.add('visible');
@@ -19,22 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Manejar el clic en el botón de inicio
     startButton.addEventListener('click', (e) => {
-        // Obtener la posición del clic
         const rect = startButton.getBoundingClientRect();
         const clickX = rect.left + rect.width / 2;
         const clickY = rect.top + rect.height / 2;
 
-        // Posicionar el círculo en el punto de clic
         circleTransition.style.top = `${clickY}px`;
         circleTransition.style.left = `${clickX}px`;
 
-        // Iniciar la animación
         initialScreen.classList.add('fade-out');
         circleTransition.classList.add('active');
-        
+
         setTimeout(() => {
             loginScreen.style.display = 'block';
-            
             setTimeout(() => {
                 loginScreen.classList.add('visible');
                 loginContainer.classList.add('visible');
@@ -43,27 +33,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Manejar el envío del formulario de login
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const cedula = document.getElementById('cedula').value;
-        const password = document.getElementById('password').value;
+        const formData = new FormData(loginForm);
 
-        // Validar credenciales
-        if (cedula === usuarioEjemplo.cedula && password === usuarioEjemplo.password) {
-            // Guardar datos de sesión
-            const userSession = {
-                cedula: cedula,
-                nombre: 'Administrador',
-                rol: 'admin',
-                fechaLogin: new Date().toISOString()
-            };
-            localStorage.setItem('userSession', JSON.stringify(userSession));
+        try {
+            const response = await fetch('../Controllers/AuthController.php', {
+                method: 'POST',
+                body: formData
+            });
 
-            // Redirigir al dashboard
-            window.location.href = '../index.php';
-        } else {
-            alert('Credenciales incorrectas. Por favor, intente nuevamente.');
+            const data = await response.json();
+
+            if (data.success) {
+                localStorage.setItem('userSession', JSON.stringify(data.usuario));
+                window.location.href = '../index.php';
+            } else {
+                alert('❌ Credenciales incorrectas.');
+            }
+        } catch (error) {
+            console.error('Error en la solicitud:', error);
+            alert('❌ Error de conexión con el servidor.');
         }
     });
 });

@@ -1,3 +1,20 @@
+<?php
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header("Location: views/Login.php"); // Redirige al login si no hay sesión activa
+    exit();
+}
+
+// Registrar acceso al dashboard
+if (!isset($_SESSION['registro_actividad'])) {
+    $_SESSION['registro_actividad'] = [];
+}
+$_SESSION['registro_actividad'][] = [
+    "accion" => "Acceso a Dashboard",
+    "fecha" => date("Y-m-d H:i:s")
+];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,10 +86,10 @@
             </div>
 
             <div class="user-info">
-                <img src="Images/LogoUsuario.png" alt="Admin" class="avatar">
+                <img src="Images/LogoUsuario.png" alt="<?php echo htmlspecialchars($_SESSION['usuario']['nombre']); ?>" class="avatar">
                 <div class="user-details">
-                    <h4>Admin Farmacia</h4>
-                    <p>Administrador</p>
+                    <h4><?php echo htmlspecialchars($_SESSION['usuario']['nombre']); ?></h4>
+                    <p><?php echo htmlspecialchars($_SESSION['usuario']['rol']); ?></p>
                 </div>
             </div>
 
@@ -648,7 +665,7 @@
     <div id="usuariosModal" class="usuarios-modal" style="display: none;">
         <div class="usuarios-panel">
             <div class="usuarios-header">
-                <h2><i class="fas fa-users"></i> Gestión de Usuarios y Clientes</h2>
+                <h2><i class="fas fa-users"></i> Gestión de Usuarios</h2>
                 <button class="cerrar-btn" id="closeUsuariosModal"><i class="fas fa-times"></i></button>
             </div>
             <div class="usuarios-tabs">

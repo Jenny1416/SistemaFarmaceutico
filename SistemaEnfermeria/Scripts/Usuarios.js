@@ -241,8 +241,45 @@ function initUsuariosPanel() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Abrir modal desde el menú lateral
+  const usuariosModal = document.getElementById('usuariosModal');
+  const usuariosBody = document.getElementById('usuariosBody');
   const btnUsuarios = document.getElementById('btnUsuarios');
+  const closeUsuariosModal = document.getElementById('closeUsuariosModal');
+
+  // Mostrar el modal al hacer click en el menú
+  btnUsuarios.addEventListener('click', function() {
+      usuariosModal.style.display = 'flex';
+      cargarUsuarios();
+  });
+
+  // Cerrar el modal
+  closeUsuariosModal.addEventListener('click', function() {
+      usuariosModal.style.display = 'none';
+  });
+
+  // Cargar usuarios desde el backend
+  function cargarUsuarios() {
+      fetch('Controllers/UsuariosController.php')
+          .then(res => res.json())
+          .then(data => {
+              usuariosBody.innerHTML = '';
+              data.usuarios.forEach(usuario => {
+                  usuariosBody.innerHTML += `
+                      <tr>
+                          <td>${usuario.nombre} <br><small>${usuario.correo}</small></td>
+                          <td>${usuario.rol}</td>
+                          <td>${usuario.fecha_actualizacion || '-'}</td>
+                          <td>${usuario.estado || 'activo'}</td>
+                          <td>
+                              <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                              <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                          </td>
+                      </tr>
+                  `;
+              });
+          });
+  }
+  // Abrir modal desde el menú lateral
   if (btnUsuarios) btnUsuarios.onclick = function(e) {
     e.preventDefault();
     document.getElementById('usuariosModal').style.display = 'flex';

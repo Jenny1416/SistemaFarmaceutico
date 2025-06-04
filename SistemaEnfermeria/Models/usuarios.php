@@ -6,11 +6,13 @@ class Usuario {
         $this->conexion = $db;
     }
 
-    public function obtenerUsuarios() {
-        $query = "SELECT * FROM usuarios";
+    public function obtenerUsuarioPorCredenciales($id) {
+        $query = "SELECT * FROM usuarios WHERE id = ?";
         $stmt = $this->conexion->prepare($query);
+        $stmt->bind_param("s", $id);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->get_result()->fetch_assoc();
     }
 }
 ?>
+
