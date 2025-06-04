@@ -241,23 +241,20 @@ function initUsuariosPanel() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  const usuariosModal = document.getElementById('usuariosModal');
   const usuariosBody = document.getElementById('usuariosBody');
   const btnUsuarios = document.getElementById('btnUsuarios');
+  const usuariosModal = document.getElementById('usuariosModal');
   const closeUsuariosModal = document.getElementById('closeUsuariosModal');
 
-  // Mostrar el modal al hacer click en el menú
   btnUsuarios.addEventListener('click', function() {
       usuariosModal.style.display = 'flex';
       cargarUsuarios();
   });
 
-  // Cerrar el modal
   closeUsuariosModal.addEventListener('click', function() {
       usuariosModal.style.display = 'none';
   });
 
-  // Cargar usuarios desde el backend
   function cargarUsuarios() {
       fetch('Controllers/UsuariosController.php')
           .then(res => res.json())
@@ -269,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
                           <td>${usuario.nombre} <br><small>${usuario.correo}</small></td>
                           <td>${usuario.rol}</td>
                           <td>${usuario.fecha_actualizacion || '-'}</td>
-                          <td>${usuario.estado || 'activo'}</td>
+                          <td>-</td>
                           <td>
                               <button class="edit-btn"><i class="fas fa-edit"></i></button>
                               <button class="delete-btn"><i class="fas fa-trash"></i></button>
@@ -279,64 +276,102 @@ document.addEventListener('DOMContentLoaded', function() {
               });
           });
   }
+
   // Abrir modal desde el menú lateral
-  if (btnUsuarios) btnUsuarios.onclick = function(e) {
-    e.preventDefault();
-    document.getElementById('usuariosModal').style.display = 'flex';
-    initUsuariosPanel();
-  };
-  // Cerrar modal
-  const closeBtn = document.getElementById('closeUsuariosModal');
-  if (closeBtn) closeBtn.onclick = () => {
-    document.getElementById('usuariosModal').style.display = 'none';
-  };
-  // Inicializar si el modal ya está visible
-  if (document.getElementById('usuariosModal').style.display !== 'none') {
-    initUsuariosPanel();
+  const btnClientes = document.getElementById('btnClientes');
+  const clientesModal = document.getElementById('clientesModal');
+  const closeClientesModal = document.getElementById('closeClientesModal');
+  if (btnClientes && clientesModal) {
+    btnClientes.onclick = function(e) {
+      e.preventDefault();
+      clientesModal.style.display = 'flex';
+      initClientesPanel();
+    };
   }
-  // Si quieres que se inicialice siempre:
-  initUsuariosPanel();
+  if (closeClientesModal && clientesModal) {
+    closeClientesModal.onclick = function() {
+      clientesModal.style.display = 'none';
+    };
+  }
+  if (clientesModal) {
+    window.addEventListener('click', function(e) {
+      if (e.target === clientesModal) {
+        clientesModal.style.display = 'none';
+      }
+    });
+  }
 
-  // --- MODALES NUEVO USUARIO/ROL ---
-  // Botones de abrir
-  const nuevoUsuarioBtn = document.getElementById('nuevoUsuarioBtn');
-  const nuevoRolBtn = document.getElementById('nuevoRolBtn');
-  // Modales
-  const nuevoUsuarioModal = document.getElementById('nuevoUsuarioModal');
-  const nuevoRolModal = document.getElementById('nuevoRolModal');
-  // Botones de cerrar/cancelar
-  const closeNuevoUsuarioModal = document.getElementById('closeNuevoUsuarioModal');
-  const cancelarNuevoUsuarioBtn = document.getElementById('cancelarNuevoUsuarioBtn');
-  const closeNuevoRolModal = document.getElementById('closeNuevoRolModal');
-  const cancelarNuevoRolBtn = document.getElementById('cancelarNuevoRolBtn');
+  // --- MODAL NUEVO CLIENTE ---
+  const nuevoClienteBtn = document.getElementById('nuevoClienteBtn');
+  const nuevoClienteModal = document.getElementById('nuevoClienteModal');
+  const closeNuevoClienteModal = document.getElementById('closeNuevoClienteModal');
+  const cancelarNuevoClienteBtn = document.getElementById('cancelarNuevoClienteBtn');
+  const formNuevoCliente = document.getElementById('formNuevoCliente');
+  const ncImagenInput = document.getElementById('ncImagen');
+  const ncImagenPreview = document.getElementById('ncImagenPreview');
 
-  // Abrir modales
-  if (nuevoUsuarioBtn) nuevoUsuarioBtn.onclick = () => { nuevoUsuarioModal.style.display = 'flex'; };
-  if (nuevoRolBtn) nuevoRolBtn.onclick = () => { nuevoRolModal.style.display = 'flex'; };
-  // Cerrar modales
-  if (closeNuevoUsuarioModal) closeNuevoUsuarioModal.onclick = cerrarNuevoUsuario;
-  if (cancelarNuevoUsuarioBtn) cancelarNuevoUsuarioBtn.onclick = cerrarNuevoUsuario;
-  if (closeNuevoRolModal) closeNuevoRolModal.onclick = cerrarNuevoRol;
-  if (cancelarNuevoRolBtn) cancelarNuevoRolBtn.onclick = cerrarNuevoRol;
-  // Cerrar al hacer click fuera
-  if (nuevoUsuarioModal) nuevoUsuarioModal.onclick = e => { if (e.target === nuevoUsuarioModal) cerrarNuevoUsuario(); };
-  if (nuevoRolModal) nuevoRolModal.onclick = e => { if (e.target === nuevoRolModal) cerrarNuevoRol(); };
-  function cerrarNuevoUsuario() { nuevoUsuarioModal.style.display = 'none'; document.getElementById('formNuevoUsuario').reset(); }
-  function cerrarNuevoRol() { nuevoRolModal.style.display = 'none'; document.getElementById('formNuevoRol').reset(); }
-
-  // Guardar Usuario
-  document.getElementById('formNuevoUsuario').onsubmit = function(e) {
-    e.preventDefault();
-    // Aquí puedes agregar validaciones extra si quieres
-    cerrarNuevoUsuario();
-    mostrarProcesoModal('exito', '¡Usuario creado exitosamente!');
-  };
-  // Guardar Rol
-  document.getElementById('formNuevoRol').onsubmit = function(e) {
-    e.preventDefault();
-    cerrarNuevoRol();
-    mostrarProcesoModal('exito', '¡Rol creado exitosamente!');
-  };
+  if (nuevoClienteBtn && nuevoClienteModal) {
+    nuevoClienteBtn.onclick = function() {
+      nuevoClienteModal.style.display = 'flex';
+      formNuevoCliente.reset();
+      ncImagenPreview.src = '/Images/LogoSoloOlivia.png';
+      ncImagenPreview.removeAttribute('data-new-img');
+    };
+  }
+  if (closeNuevoClienteModal) closeNuevoClienteModal.onclick = cerrarNuevoCliente;
+  if (cancelarNuevoClienteBtn) cancelarNuevoClienteBtn.onclick = cerrarNuevoCliente;
+  if (nuevoClienteModal) {
+    nuevoClienteModal.onclick = function(e) {
+      if (e.target === nuevoClienteModal) cerrarNuevoCliente();
+    };
+  }
+  function cerrarNuevoCliente() {
+    nuevoClienteModal.style.display = 'none';
+    formNuevoCliente.reset();
+    ncImagenPreview.src = '/Images/LogoSoloOlivia.png';
+    ncImagenPreview.removeAttribute('data-new-img');
+  }
+  if (ncImagenInput) {
+    ncImagenInput.onchange = function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          ncImagenPreview.src = e.target.result;
+          ncImagenPreview.setAttribute('data-new-img', e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+  }
+  if (formNuevoCliente) {
+    formNuevoCliente.onsubmit = function(e) {
+      e.preventDefault();
+      const nombre = document.getElementById('ncNombre').value.trim();
+      const email = document.getElementById('ncEmail').value.trim();
+      const telefono = document.getElementById('ncTelefono').value.trim();
+      const ventas = parseInt(document.getElementById('ncVentas').value);
+      const productos = document.getElementById('ncProductos').value.trim();
+      const imagen = ncImagenPreview.getAttribute('data-new-img') || '/Images/LogoSoloOlivia.png';
+      if (!nombre || !email || !telefono || isNaN(ventas) || !productos) {
+        mostrarProcesoModal('error', 'Por favor, completa todos los campos correctamente.');
+        return;
+      }
+      clientesDemo.push({
+        id: Date.now(),
+        nombre,
+        email,
+        telefono,
+        ventas,
+        productos,
+        imagen
+      });
+      renderClientesTabla();
+      accionesClientes();
+      mostrarProcesoModal('exito', '¡Cliente agregado exitosamente!');
+      cerrarNuevoCliente();
+    };
+  }
 });
 
 // --- CLIENTES PANEL EXCLUSIVO ---

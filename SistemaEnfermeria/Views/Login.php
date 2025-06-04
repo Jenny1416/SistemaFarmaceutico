@@ -24,14 +24,14 @@
         
         <div class="login-container">
             <h2 style="text-align: center; color: #0077be; margin-bottom: 2rem;">Iniciar Sesión</h2>
-            <form action="../Controllers/AuthController.php" method="POST">
+            <form>
                 <div class="form-group">
-                    <label for="id">Identificación</label>
-                    <input type="text" name="id" required>
+                    <label for="cedula">Identificación</label>
+                    <input type="text" id="cedula" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Contraseña</label>
-                    <input type="password" name="password" required>
+                    <input type="password" id="password" required>
                 </div>
                 <button type="submit" class="submit-btn">ENTRAR</button>
             </form>
